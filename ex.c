@@ -15,11 +15,12 @@ char* strcpy (char* s, const char* t) {
 
 char* strncpy(char* s, const char* t, size_t n) {
   char* p = s;
-  while( n-- > 0 && ((*s++ = *t++) != '\0' )) {}
+  n++;
+  while( n-- > 1 && ((*s++ = *t++) != '\0' )) {}
   while ( n-- > 0 ) {
      *s++ = '\0';
   }
-  *s = '\0';
+  *s++ = '\0';
   return p;
 }
 
@@ -33,9 +34,9 @@ int strcmp(const char* s, const char* t) {
 
 int main () {
   const char* line = "abcde";
-  char* copy = "cat";
+  char buf[50];
   print_reverse(line);
-  strncpy(copy, line, 4);
+  strncpy(buf, line, 4);
 
-  printf("\ncopy = %s\nline = %s\n", copy, line);
+  printf("\ncopy = %s\nline = %s\n", buf, line);
 }
