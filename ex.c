@@ -42,14 +42,24 @@ int strncmp(const char* s, const char* t, size_t n) {
 }
 
 char* strcat(char* s, const char* t) {
-  *s = *s + *t;
-  return s;
+  while (*s) {
+    ++s;
+  }
+  return strcpy(s, t);
+}
+
+char* strncat(char* s, const char* t, size_t n) {
+  n++;
+  while (*s && n-- > 0) {
+    ++s;
+  }
+  return strcpy(s, t);
 }
 
 int main () {
   const char* line = "abcde";
   const char* second = "abcdef";
-  char* add = "hello->";
+  const char* add = "Hello->";
   char buf[50];
   print_reverse(line);
   strcpy(buf, line);
@@ -70,5 +80,5 @@ int main () {
 
   printf("strncmp = %d\nline = %s\nline = %s\n\n",strncmp(line,line, 6), line, line);
 
-  printf("strcat = %s",strcat(add, line));
+  printf("strcat = %s\nbuf = %s\nstrcat 2 = %s\nbuf = %s\n",strcat(buf, line), buf, strcat(buf,add), buf);
 }
