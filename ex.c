@@ -32,11 +32,43 @@ int strcmp(const char* s, const char* t) {
   return *s - *t;
 }
 
+int strncmp(const char* s, const char* t, size_t n) {
+  n++;
+  while(*s != '\0' && *t != '\0' && *s == *t && n-- > 1) {
+    ++s;
+    ++t;
+  }
+  return *s - *t;
+}
+
+char* strcat(char* s, const char* t) {
+  *s = *s + *t;
+  return s;
+}
+
 int main () {
   const char* line = "abcde";
+  const char* second = "abcdef";
+  char* add = "hello->";
   char buf[50];
   print_reverse(line);
-  strncpy(buf, line, 4);
+  strcpy(buf, line);
+  printf("\n\ncopy = %s\nline = %s\n", buf, line);
 
+  strncpy(buf, line, 4);
   printf("\ncopy = %s\nline = %s\n", buf, line);
+
+  printf("strcmp = %d\nline = %s\nsecond = %s\n\n",strcmp(line,second), line, second);
+
+  printf("strcmp = %d\nsecond = %s\nline = %s\n\n",strcmp(second,line), second, line);
+
+  printf("strcmp = %d\nline = %s\nline = %s\n\n",strcmp(line,line), line, line);
+
+  printf("strncmp = %d\nline = %s\nsecond = %s\n\n",strncmp(line,second, 4), line, second);
+
+  printf("strncmp = %d\nsecond = %s\nline = %s\n\n",strncmp(second,line, 5), second, line);
+
+  printf("strncmp = %d\nline = %s\nline = %s\n\n",strncmp(line,line, 6), line, line);
+
+  printf("strcat = %s",strcat(add, line));
 }
