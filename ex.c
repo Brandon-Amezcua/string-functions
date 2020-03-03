@@ -1,5 +1,6 @@
 #include  <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 void print_reverse(const char* s) {
   if (*s == '\0') {return;}
@@ -17,7 +18,7 @@ char* strncpy(char* s, const char* t, size_t n) {
   char* p = s;
   n++;
   while( n-- > 1 && ((*s++ = *t++) != '\0' )) {}
-  while ( n-- > 0 ) {
+  while ( (int)n-- > 0 ) {
      *s++ = '\0';
   }
   *s++ = '\0';
@@ -50,7 +51,7 @@ char* strcat(char* s, const char* t) {
 
 char* strncat(char* s, const char* t, size_t n) {
   n++;
-  while (*s && n-- > 0) {
+  while (*s && n-- > 1) {
     ++s;
   }
   return strcpy(s, t);
@@ -72,6 +73,61 @@ int strend(char* s, char* t){
   return end;
 }
 
+size_t strspn(const char* s, const char* t) {
+  size_t i;
+   for(i = 0; s[i] != '\0'; i++) {
+     for(size_t l = 0; s[i] != t[l]; l++) {
+       if (t[l] == '\0') {
+         return i;
+       }
+     }
+   }
+   return i;
+}
+
+size_t strcspn(const char* s, const char* t) {
+  size_t i;
+   for(i = 0; s[i] != '\0'; i++) {
+     for(size_t l = 0; s[i] == t[l]; l++) {
+       if (t[l] == s[i]) {
+         return --i;
+       }
+     }
+   }
+   return --i;
+}
+
+char* strpbrk(const char* s, const char* t) {
+  char* ret;
+  size_t ex = strcspn(s,t);
+  for (size_t m = 0; m == ex; m++) {}
+  *ret = *s;
+  printf("ret = %s", ret);
+  return ret;
+}
+
+void test_strspn(const char* s, const char* t) {
+   size_t test = strspn(s, t);
+   printf("c = %s\tt = %s\ttest = %zu\n", s, t, test);
+}
+
+void tests_strspn() {
+  printf("\ntests_strspn:\n");
+  test_strspn("badeggs", "abde");
+  test_strspn("badeggs", "xyzs");
+}
+
+void test_strcspn(const char* s, const char* t) {
+   size_t test = strcspn(s, t);
+   printf("c = %s\tt = %s\ttest = %zu\n", s, t, test);
+}
+
+void tests_strcspn() {
+  printf("\ntests_strcspn:\n");
+  test_strcspn("badeggs", "abde");
+  test_strcspn("badeggs", "xyzs");
+}
+
 int main () {
   const char* line = "abcde";
   const char* second = "abcdef";
@@ -80,13 +136,13 @@ int main () {
   char* end = "ing";
   char* not = "not";
   char buf[50];
-
+  /*
   print_reverse(line);
   strcpy(buf, line);
   printf("\n\ncopy = %s\nline = %s\n", buf, line);
 
   strncpy(buf, line, 4);
-  printf("\ncopy = %s\nline = %s\n", buf, line);
+  printf("\ncopy = %s\nline = %s\n\n", buf, line);
 
   printf("strcmp = %d\nline = %s\nsecond = %s\n\n",strcmp(line,second), line, second);
 
@@ -104,7 +160,13 @@ int main () {
 
   printf("strend = %d\nbeg = %s\nend = %s\n\n",strend(beg, end), beg, end);
 
-  printf("strend = %d\nend = %s\nbeg = %s\n\n",strend(end, beg), end, beg); 
+  printf("strend = %d\nend = %s\nbeg = %s\n\n",strend(end, beg), end, beg);
 
   printf("strend = %d\nnot = %s\nbeg = %s\n",strend(not, beg), not, beg);
+  */
+  char* got = strpbrk("badeggs", "abde");
+
+  tests_strspn();
+
+  tests_strcspn();
 }
